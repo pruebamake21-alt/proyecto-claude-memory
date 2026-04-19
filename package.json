@@ -1,0 +1,17 @@
+{
+  "name": "supabase-monitor",
+  "version": "1.0.0",
+  "description": "Monitor Supabase waitlist and send Telegram notifications",
+  "main": "monitor.js",
+  "scripts": {
+    "start": "node monitor.js",
+    "openclaw": "node openclaw-agent.js",
+    "test:openclaw": "node scripts/test-openclaw.js",
+    "setup:webhook": "node scripts/setup-webhook.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.24.0",
+    "node-telegram-bot-api": "^0.64.0",
+    "pg": "^8.20.0"
+  }
+}

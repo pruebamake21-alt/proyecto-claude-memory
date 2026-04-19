@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TweetPredict - Analiza tus tweets antes de publicar</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: #0f172a;
+            line-height: 1.6;
+            background: #ffffff;
+        }
+
+        /* HEADER */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #e2e8f0;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-family: Georgia, serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        nav a {
+            margin-left: 2rem;
+            text-decoration: none;
+            color: #64748b;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        nav a:hover { color: #0f172a; }
+
+        /* HERO */
+        .hero {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: Georgia, serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .subheadline {
+            font-size: 1.25rem;
+            color: #64748b;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn-primary {
+            background: #ef4444;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.25rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary:hover { background: #dc2626; }
+
+        /* PROBLEMA */
+        .problem {
+            background: #f8fafc;
+            padding: 6rem 2rem;
+        }
+
+        .problem .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .problem h2 {
+            font-family: Georgia, serif;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .pain-points {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .pain-point {
+            padding: 2rem;
+            background: white;
+            border-left: 4px solid #ef4444;
+        }
+
+        .pain-point p { color: #64748b; }
+
+        /* SOLUCIÓN */
+        .solution {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .solution h2 {
+            font-family: Georgia, serif;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature {
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature h3 {
+            font-family: Georgia, serif;
+            margin-bottom: 0.5rem;
+            font-size: 1.25rem;
+        }
+
+        .feature p { color: #64748b; font-size: 0.95rem; }
+
+        /* TESTIMONIOS */
+        .testimonials {
+            background: #f8fafc;
+            padding: 6rem 2rem;
+        }
+
+        .testimonials .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .testimonials h2 {
+            font-family: Georgia, serif;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .testimonial {
+            padding: 2rem;
+            background: white;
+            border-radius: 0.25rem;
+        }
+
+        .testimonial blockquote {
+            font-size: 1rem;
+            color: #64748b;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .testimonial cite {
+            font-style: normal;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .testimonial cite span {
+            color: #64748b;
+            font-weight: 400;
+        }
+
+        /* PRICING */
+        .pricing {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .pricing h2 {
+            font-family: Georgia, serif;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .pricing-subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 3rem;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .plan {
+            padding: 2rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.25rem;
+            text-align: center;
+        }
+
+        .plan.featured {
+            border-color: #ef4444;
+            border-width: 2px;
+        }
+
+        .plan-name {
+            font-family: Georgia, serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .plan-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .plan-price span {
+            font-size: 1rem;
+            color: #64748b;
+            font-weight: 400;
+        }
+
+        .plan-features {
+            list-style: none;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .plan-features li {
+            padding: 0.5rem 0;
+            color: #64748b;
+            border-bottom: 1px solid #f8fafc;
+        }
+
+        .plan-features li:last-child {
+            border-bottom: none;
+        }
+
+        /* FAQ */
+        .faq {
+            background: #f8fafc;
+            padding: 6rem 2rem;
+        }
+
+        .faq .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq h2 {
+            font-family: Georgia, serif;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .faq-item {
+            background: white;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 0.25rem;
+        }
+
+        .faq-item h3 {
+            font-family: Georgia, serif;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .faq-item p {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #0f172a;
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        footer a { color: #ef4444; text-decoration: none; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .hero { padding: 4rem 1.5rem; }
+            nav a { margin-left: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="logo">TweetPredict</div>
+        <nav>
+            <a href="#features">Features</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#faq">FAQ</a>
+        </nav>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <h1>Descubre qué tweets funcionan antes de publicar</h1>
+        <p class="subheadline">Analiza el potencial viral de tus tweets con IA. Optimiza tu contenido y crece tu audiencia sin adivinar.</p>
+        <a href="#" class="btn-primary">Probar gratis</a>
+    </section>
+
+    <!-- PROBLEMA -->
+    <section class="problem">
+        <div class="container">
+            <h2>El problema que nadie habla</h2>
+            <div class="pain-points">
+                <div class="pain-point">
+                    <p>Escribes un tweet pensando que será viral. Publicas. 3 likes. El silencio duele más que no escribir nada.</p>
+                </div>
+                <div class="pain-point">
+                    <p>Ves creators con la mitad de tu talento explotando mientras tú sigues estancado. No es suerte, es data.</p>
+                </div>
+                <div class="pain-point">
+                    <p>Pasas 20 minutos escribiendo un hilo y 2 segundos decidiendo si publicarlo. Sin feedback, solo esperanza.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOLUCIÓN -->
+    <section class="solution" id="features">
+        <h2>Cómo lo solucionamos</h2>
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">📊</div>
+                <h3>Score de viralidad</h3>
+                <p>Recibe una puntuación predictiva basada en miles de tweets virales analizados.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🔍</div>
+                <h3>Análisis de palabras clave</h3>
+                <p>Identifica qué términos y estructuras funcionan mejor en tu nicho específico.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">⏰</div>
+                <h3>Timing óptimo</h3>
+                <p>Te dice cuándo publicar para maximizar alcance según tu audiencia.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIOS -->
+    <section class="testimonials">
+        <div class="container">
+            <h2>Lo que dicen los creators</h2>
+            <div class="testimonial-grid">
+                <div class="testimonial">
+                    <blockquote>"Pasé de 200 a 50k followers en 6 meses. TweetPredict me ahorró cientos de tweets mediocres."</blockquote>
+                    <cite>Sarah K. <span>— Tech creator, 52k followers</span></cite>
+                </div>
+                <div class="testimonial">
+                    <blockquote>"Dejé de adivinar. Ahora sé qué va a funcionar antes de publicar. Es como tener un crystal ball."</blockquote>
+                    <cite>Marcus R. <span>— Indie hacker, 28k followers</span></cite>
+                </div>
+                <div class="testimonial">
+                    <blockquote>"Mi engagement rate se triplicó. Los tweets que antes ignoraba ahora son mis mejores performers."</blockquote>
+                    <cite>Alex T. <span>— Newsletter writer, 15k followers</span></cite>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="pricing" id="pricing">
+        <h2>Pricing simple</h2>
+        <p class="pricing-subtitle">Empieza gratis. Escala cuando crezcas.</p>
+        <div class="pricing-grid">
+            <div class="plan">
+                <div class="plan-name">Starter</div>
+                <div class="plan-price">$0<span>/mes</span></div>
+                <ul class="plan-features">
+                    <li>5 análisis/día</li>
+                    <li>Score básico</li>
+                    <li>Historial 7 días</li>
+                </ul>
+                <a href="#" class="btn-primary">Empezar gratis</a>
+            </div>
+            <div class="plan featured">
+                <div class="plan-name">Pro</div>
+                <div class="plan-price">$19<span>/mes</span></div>
+                <ul class="plan-features">
+                    <li>Análisis ilimitados</li>
+                    <li>Análisis avanzado de keywords</li>
+                    <li>Recomendaciones de timing</li>
+                    <li>Historial ilimitado</li>
+                </ul>
+                <a href="#" class="btn-primary">Empezar Pro</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <h2>Preguntas frecuentes</h2>
+            <div class="faq-item">
+                <h3>¿Cómo funciona el análisis?</h3>
+                <p>Usamos un modelo entrenado con millones de tweets para predecir engagement basado en texto, estructura, y timing.</p>
+            </div>
+            <div class="faq-item">
+                <h3>¿Necesito conectar mi cuenta de Twitter?</h3>
+                <p>No. Solo copia y pega tu tweet en el analyzer. Sin permisos, sin acceso a tu cuenta.</p>
+            </div>
+            <div class="faq-item">
+                <h3>¿Funciona para cuentas pequeñas?</h3>
+                <p>Sí. De hecho, es cuando más ayuda. Creators con <1k followers ven el mayor impacto en su crecimiento.</p>
+            </div>
+            <div class="faq-item">
+                <h3>¿Puedo cancelar cuando quiera?</h3>
+                <p>Sí. Sin contratos, sin preguntas. Cancelas desde tu dashboard y listo.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 TweetPredict. Todos los derechos reservados.</p>
+        <p style="margin-top: 1rem;">
+            <a href="#">Privacidad</a> • <a href="#">Términos</a> • <a href="#">Contact</a>
+        </p>
+    </footer>
+</body>
+</html>
